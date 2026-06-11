@@ -1,0 +1,40 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function validCondition() {
+      return request.resource.data.condition in ['healthy', 'injured', 'needs_food'];
+    }
+
+    function validStatusOnCreate() {
+      return request.resource.data.status == 'reported';
+    }
+
+    function validLocation() {
+      return request.resource.data.location.latitude is number
+        && request.resource.data.location.longitude is number
+        && request.resource.data.location.latitude >= -90
+        && request.resource.data.location.latitude <= 90
+        && request.resource.data.location.longitude >= -180
+        && request.resource.data.location.longitude <= 180;
+    }
+
+    function noContactFields() {
+      return !('reporterEmail' in request.resource.data)
+        && !('reporterPhone' in request.resource.data)
+        && !('contact' in request.resource.data);
+    }
+
+    match /catReports/{reportId} {
+      allow read: if resource.data.status != 'closed';
+      allow create: if validCondition()
+        && validStatusOnCreate()
+        && validLocation()
+        && noContactFields()
+        && request.resource.data.locationPrecision in ['exact', 'approximate']
+        && request.resource.data.source.submissionId is string
+        && request.resource.data.source.submittedBy == 'visitor';
+      allow update, delete: if false;
+    }
+  }
+}
