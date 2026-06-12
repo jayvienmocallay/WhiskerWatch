@@ -1,8 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { ReportDetail } from "../../src/features/reports/components/ReportDetail";
-import { markerAccessibleName, markerClass } from "../../src/map/markers";
-import { markerHtml } from "../../src/map/markers";
+import { markerAccessibleName, markerClass, markerHtml } from "../../src/map/markers";
 import { makeReport } from "../../src/test/fixtures/reports";
 
 describe("report map and detail behavior", () => {
@@ -10,7 +9,8 @@ describe("report map and detail behavior", () => {
     const report = makeReport({ condition: "injured", status: "reported" });
     expect(markerAccessibleName(report)).toMatch(/injured cat report, reported/i);
     expect(markerClass("needs_food")).toBe("marker cat-marker marker-needs-food");
-    expect(markerHtml("injured")).toContain("▲");
+    expect(markerHtml("injured")).toContain("ALERT");
+    expect(markerHtml("injured")).toContain("marker-ear");
   });
 
   it("shows report detail with approximate location and safe notes", () => {
