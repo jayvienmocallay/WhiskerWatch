@@ -14,6 +14,7 @@ export function ReportDetail({ report }: { report: CatReport }) {
         </span>
         <WhiskerDivider />
         <span className="status-chip"><span aria-hidden="true">{statusVocabulary[report.status].symbol}</span>{statusVocabulary[report.status].label}</span>
+        <span className="sr-only">{conditionVocabulary[report.condition].cue}. {statusVocabulary[report.status].cue}.</span>
       </div>
       {report.photo ? (
         <figure className="snapshot-frame">
