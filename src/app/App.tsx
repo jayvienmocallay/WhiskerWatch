@@ -1,25 +1,35 @@
 import { useEffect, useMemo, useState } from "react";
+import { PatrolLogs } from "../features/reports/components/PatrolLogs";
 import { ReportDetail } from "../features/reports/components/ReportDetail";
 import { ReportFilters } from "../features/reports/components/ReportFilters";
 import { ReportForm } from "../features/reports/components/ReportForm";
+import { ReportSuccess } from "../features/reports/components/ReportSuccess";
 import { useReports } from "../features/reports/hooks/useReports";
 import type { CatReport, MapFilter, NewReportInput, ReportLocation } from "../features/reports/reportTypes";
 import { submitReport } from "../features/reports/reportService";
 import { CatMap } from "../map/CatMap";
 import { defaultMapFilter, filterReports } from "../map/mapFilters";
+import { pageCopy } from "../ui/copy";
 import { EmptyState, LoadingState } from "../ui/states";
 import { seedReports } from "../test/fixtures/seedReports";
-import { CollarTagIcon } from "../ui/icons";
+import { appPages, type AppPageId, pageOrder } from "./routes";
+import { WhiskerWatchLogo } from "../ui/icons";
 
 export default function App() {
   const { reports, loading } = useReports();
+  const [activePage, setActivePage] = useState<AppPageId>(() => {
+    const page = new URLSearchParams(window.location.search).get("page");
+    return page === "patrol" || page === "success" ? page : "workbench";
+  });
   const [selectedLocation, setSelectedLocation] = useState<ReportLocation | undefined>();
   const [selectedReportId, setSelectedReportId] = useState<string | undefined>();
+  const [lastSubmittedReportId, setLastSubmittedReportId] = useState<string | undefined>();
   const [filter, setFilter] = useState<MapFilter>(defaultMapFilter);
   const [optimisticReports, setOptimisticReports] = useState<CatReport[]>([]);
 
   useEffect(() => {
-    const seedCount = new URLSearchParams(window.location.search).get("seed");
+    const params = new URLSearchParams(window.location.search);
+    const seedCount = params.get("seed");
     if (seedCount) seedReports(Number(seedCount) || 25);
   }, []);
 
@@ -28,26 +38,68 @@ export default function App() {
     [...reports, ...optimisticReports].forEach((report) => byId.set(report.id, report));
     return Array.from(byId.values());
   }, [optimisticReports, reports]);
+
   const visibleReports = useMemo(() => filterReports(allReports, filter), [allReports, filter]);
   const selectedReport = visibleReports.find((report) => report.id === selectedReportId);
+  const lastSubmittedReport = allReports.find((report) => report.id === lastSubmittedReportId);
 
   async function handleSubmit(input: NewReportInput) {
     const created = await submitReport(input);
     setOptimisticReports((current) => [created, ...current.filter((item) => item.id !== created.id)]);
     setSelectedReportId(created.id);
+    setLastSubmittedReportId(created.id);
+    setActivePage("success");
+  }
+
+  function chooseReport(reportId: string) {
+    setSelectedReportId(reportId);
+    setActivePage(activePage === "success" ? "workbench" : activePage);
+  }
+
+  function createAnotherReport() {
+    setActivePage("workbench");
+    setSelectedLocation(undefined);
   }
 
   return (
     <main className="app-shell">
       <header className="app-header">
         <div>
-          <p className="eyebrow"><CollarTagIcon /> Community cat watch</p>
-          <h1>WhiskerWatch</h1>
+          <p className="eyebrow">{pageCopy.eyebrow}</p>
+          <h1><WhiskerWatchLogo title={pageCopy.logoLabel} /></h1>
         </div>
-        <p>Report stray or lost cats so nearby helpers can notice urgent cases faster.</p>
+        <p>{pageCopy.dek}</p>
+        <nav className="app-nav" aria-label="Primary">
+          {pageOrder.map((pageId) => (
+            <button
+              key={pageId}
+              type="button"
+              className={activePage === pageId ? "nav-button selected" : "nav-button secondary"}
+              onClick={() => setActivePage(pageId)}
+            >
+              {appPages[pageId].label}
+            </button>
+          ))}
+        </nav>
       </header>
 
-      <section className="workspace">
+      {activePage === "success" ? (
+        <ReportSuccess
+          report={lastSubmittedReport}
+          onCreateAnother={createAnotherReport}
+          onContinueMonitoring={() => setActivePage("workbench")}
+        />
+      ) : null}
+
+      {activePage === "patrol" ? (
+        <PatrolLogs
+          reports={visibleReports}
+          selectedReportId={selectedReportId}
+          onSelectReport={chooseReport}
+        />
+      ) : null}
+
+      <section className={activePage === "workbench" ? "workspace" : "workspace workspace-secondary"}>
         <aside className="sidebar">
           <ReportForm selectedLocation={selectedLocation} onSubmitReport={handleSubmit} />
           <ReportFilters filter={filter} onChange={setFilter} />
@@ -64,7 +116,7 @@ export default function App() {
           />
           {!loading && visibleReports.length === 0 ? (
             <EmptyState
-              message="No reports match this view."
+              message={pageCopy.noReports}
               action={
                 <button
                   type="button"
@@ -82,7 +134,7 @@ export default function App() {
           {selectedReport ? (
             <ReportDetail report={selectedReport} />
           ) : (
-            <EmptyState message="Select a report marker to inspect details." />
+            <EmptyState message={pageCopy.selectReport} />
           )}
         </aside>
       </section>
