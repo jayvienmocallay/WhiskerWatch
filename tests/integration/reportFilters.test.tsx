@@ -9,7 +9,8 @@ describe("ReportFilters", () => {
     const onChange = vi.fn();
     render(<ReportFilters filter={defaultMapFilter} onChange={onChange} />);
     expect(screen.getByRole("heading", { name: /scent trails/i })).toBeInTheDocument();
-    expect(screen.getByText(/food bowl signal/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/injured/i)).not.toBeChecked();
+    expect(screen.getByText(/food bowl support cue/i)).toBeInTheDocument();
     expect(screen.getAllByText(/collar tag stage/i).length).toBeGreaterThan(0);
     await userEvent.click(screen.getByLabelText(/injured/i));
     expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ conditions: ["injured"] }));
