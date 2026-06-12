@@ -32,6 +32,15 @@ Open the local URL shown by Vite. To load seeded reports for manual testing, ope
 http://127.0.0.1:5173/?seed=25
 ```
 
+Stitch-aligned surfaces can also be opened directly:
+
+```text
+http://127.0.0.1:5173/?seed=25&page=patrol
+http://127.0.0.1:5173/?page=success
+```
+
+Strict Stitch parity review for `specs/003-stitch-parity-copy` additionally checks the 20-point visual precision rubric, logo consistency across all surfaces, and hidden screen classification in the feature docs.
+
 ## Validation
 
 ```bash
@@ -61,5 +70,7 @@ npm run firebase:emulators
 4. Optionally attach a JPEG, PNG, or WebP image up to 5 MB.
 5. Submit the report.
 6. Confirm the submit button enters a pending state and the new report appears on the map/list.
-7. Open the report detail and verify status, condition, approximate location, submission time, photo, and safe notes.
-8. Filter by condition/status, verify empty states, and reset filters.
+7. Confirm the Help Signal Sent success view appears with actions to create another report or continue monitoring.
+8. Open the report detail and verify status, condition, approximate location, submission time, photo, and safe notes.
+9. Open Patrol Logs and verify report activity remains scannable.
+10. Filter by condition/status, verify empty states, and reset filters.
