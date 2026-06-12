@@ -16,5 +16,5 @@ export function markerSymbol(condition: Condition): string {
 }
 
 export function markerHtml(condition: Condition): string {
-  return `<span class="marker-ear" aria-hidden="true"></span><span aria-hidden="true">${markerSymbol(condition)}</span>`;
+  return `<span class="marker-ear" aria-hidden="true"></span><span class="marker-symbol" aria-hidden="true">${markerSymbol(condition)}</span>`;
 }
