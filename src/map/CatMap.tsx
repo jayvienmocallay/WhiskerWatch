@@ -25,16 +25,16 @@ function iconFor(report: CatReport, selected: boolean) {
   return L.divIcon({
     className: `${markerClass(report.condition)} ${selected ? "marker-selected" : ""}`,
     html: markerHtml(report.condition),
-    iconSize: [34, 34],
-    iconAnchor: [17, 17],
+    iconSize: [38, 38],
+    iconAnchor: [19, 19],
   });
 }
 
 const selectedLocationIcon = L.divIcon({
   className: "selected-location-marker",
-  html: `<span aria-hidden="true">◖</span>`,
-  iconSize: [32, 32],
-  iconAnchor: [16, 16],
+  html: `<span aria-hidden="true">PIN</span>`,
+  iconSize: [34, 34],
+  iconAnchor: [17, 17],
 });
 
 export function CatMap({
@@ -50,6 +50,13 @@ export function CatMap({
 
   return (
     <section className="map-panel" aria-label="Cat report map">
+      <div className="map-panel-heading">
+        <div>
+          <p className="eyebrow">Live view</p>
+          <h2>The Territory</h2>
+        </div>
+        <span>{reports.length} visible</span>
+      </div>
       <MapContainer center={center} zoom={13} scrollWheelZoom className="leaflet-map">
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -71,7 +78,7 @@ export function CatMap({
             <Popup>
               <button type="button" className="cat-tag-popup" onClick={() => onSelectReport(report.id)}>
                 <span aria-hidden="true">{markerSymbol(report.condition)}</span>
-                {conditionVocabulary[report.condition].label} · {statusVocabulary[report.status].label}
+                {conditionVocabulary[report.condition].label} - {statusVocabulary[report.status].label}
               </button>
             </Popup>
           </Marker>
@@ -89,6 +96,7 @@ export function CatMap({
             <span className={markerClass(report.condition)} aria-hidden="true">{markerSymbol(report.condition)}</span>
             <span>{conditionVocabulary[report.condition].label}</span>
             <span className="tag-status" aria-hidden="true">{statusVocabulary[report.status].symbol}</span>
+            <span className="sr-only">{statusVocabulary[report.status].cue}</span>
           </button>
         ))}
       </div>
