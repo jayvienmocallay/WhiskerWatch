@@ -1,4 +1,12 @@
 @media (max-width: 1180px) {
+  .app-header {
+    grid-template-columns: 1fr;
+  }
+
+  .app-nav {
+    justify-content: start;
+  }
+
   .workspace {
     grid-template-columns: minmax(300px, 0.85fr) minmax(420px, 1.15fr);
   }
@@ -6,15 +14,38 @@
   .detail-pane {
     grid-column: 1 / -1;
   }
+
+  .success-view {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 820px) {
   .app-shell {
-    padding: 0.75rem;
+    padding: 1rem;
   }
 
   .app-header {
     align-items: start;
+  }
+
+  h1 {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  .ww-logo {
+    gap: 0.5rem;
+  }
+
+  .ww-logo-mark {
+    height: var(--logo-mark-size-mobile);
+    min-width: var(--logo-mark-size-mobile);
+  }
+
+  .ww-logo-wordmark {
+    font-size: 28px;
+    line-height: 36px;
   }
 
   .workspace {
@@ -43,5 +74,41 @@
   .filter-row label,
   .report-list-item {
     flex: 1 1 150px;
+  }
+
+  .patrol-header {
+    align-items: start;
+    display: grid;
+  }
+
+  .patrol-row {
+    grid-template-columns: 1fr;
+  }
+
+  .success-actions button,
+  .app-nav button {
+    flex: 1 1 160px;
+  }
+}
+
+@media (max-width: 460px) {
+  .app-shell {
+    padding: 0.75rem;
+  }
+
+  .report-form,
+  .filters,
+  .report-detail,
+  .success-view,
+  .patrol-dashboard {
+    padding: 0.85rem;
+  }
+
+  .report-list-item,
+  .segmented label,
+  .filter-row label,
+  button {
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 }
