@@ -7,6 +7,9 @@ test("visitor can submit a report and see it on the map", async ({ page }) => {
   await page.getByRole("radio", { name: "Injured" }).check();
   await page.getByLabel("Notes").fill("Orange cat near the market entrance.");
   await page.getByRole("button", { name: "Submit report" }).click();
-  await expect(page.getByText("Report submitted")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Help Signal Sent" })).toBeVisible();
+  await expect(page.getByLabel("Help Signal Sent").getByText(/Report submitted/)).toBeVisible();
+  await expect(page.getByRole("button", { name: /Create another report/i })).toBeVisible();
+  await page.getByRole("button", { name: /Continue monitoring/i }).click();
   await expect(page.locator(".report-list").getByRole("button", { name: /injured cat report/i })).toBeVisible();
 });
