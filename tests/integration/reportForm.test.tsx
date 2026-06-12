@@ -9,6 +9,7 @@ describe("ReportForm", () => {
     const onSubmitReport = vi.fn();
     render(<ReportForm onSubmitReport={onSubmitReport} />);
     expect(screen.getByRole("heading", { name: /rescue note/i })).toBeInTheDocument();
+    expect(screen.getByText(/Safe paws only/i)).toBeInTheDocument();
     await userEvent.click(screen.getByRole("button", { name: /submit report/i }));
     expect(screen.getByText(/choose a map location/i)).toBeInTheDocument();
     expect(screen.getByText(/choose the cat condition/i)).toBeInTheDocument();
@@ -24,7 +25,7 @@ describe("ReportForm", () => {
       />,
     );
     await userEvent.click(screen.getByLabelText(/injured/i));
-    expect(screen.getByText(/alert ear signal/i)).toBeInTheDocument();
+    expect(screen.getByText(/alert-ear cue/i)).toBeInTheDocument();
     await userEvent.type(screen.getByLabelText(/notes/i), "Orange cat near the market.");
     await userEvent.click(screen.getByRole("button", { name: /submit report/i }));
     expect(await screen.findByText(/report submitted/i)).toBeInTheDocument();
