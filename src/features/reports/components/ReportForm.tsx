@@ -4,7 +4,15 @@ import { createSubmissionId, validateNewReport } from "../reportValidation";
 import { conditionVocabulary } from "../../../ui/statusVocabulary";
 import { formCopy } from "../../../ui/copy";
 import { ErrorState, SuccessState } from "../../../ui/states";
-import { AlertEarIcon, CameraCatEyeIcon, CollarTagIcon, FoodBowlIcon, HelpedPawIcon, PawDropIcon } from "../../../ui/icons";
+import {
+  AlertEarIcon,
+  CameraCatEyeIcon,
+  CollarTagIcon,
+  FoodBowlIcon,
+  HelpedPawIcon,
+  PawDropIcon,
+  TailSignalIcon,
+} from "../../../ui/icons";
 
 interface ReportFormProps {
   selectedLocation?: ReportLocation;
@@ -18,6 +26,12 @@ interface ReportFormProps {
 }
 
 const conditions: Condition[] = ["healthy", "injured", "needs_food"];
+
+function conditionIcon(item: Condition) {
+  if (item === "needs_food") return <FoodBowlIcon />;
+  if (item === "injured") return <AlertEarIcon />;
+  return <TailSignalIcon />;
+}
 
 export function ReportForm({ selectedLocation, onSubmitReport }: ReportFormProps) {
   const [condition, setCondition] = useState<Condition | undefined>();
@@ -33,6 +47,7 @@ export function ReportForm({ selectedLocation, onSubmitReport }: ReportFormProps
       setErrors({ form: formCopy.duplicatePending });
       return;
     }
+
     const input = { location: selectedLocation, condition, photoFile, notes, submissionId: submissionIdRef.current };
     const validation = validateNewReport(input);
     setErrors(validation.errors);
@@ -80,9 +95,7 @@ export function ReportForm({ selectedLocation, onSubmitReport }: ReportFormProps
                 checked={condition === item}
                 onChange={() => setCondition(item)}
               />
-              <span className="signal-icon" aria-hidden="true">
-                {item === "needs_food" ? <FoodBowlIcon /> : item === "injured" ? <AlertEarIcon /> : "↗"}
-              </span>
+              <span className="signal-icon" aria-hidden="true">{conditionIcon(item)}</span>
               {conditionVocabulary[item].label}
               <span className="sr-only">{conditionVocabulary[item].cue}</span>
             </label>
@@ -108,13 +121,14 @@ export function ReportForm({ selectedLocation, onSubmitReport }: ReportFormProps
       <label>
         Notes
         <textarea
+          aria-describedby="notes-help"
           value={notes}
           maxLength={500}
           onChange={(event) => setNotes(event.currentTarget.value)}
           placeholder="Cat color, landmark, or safe public context"
         />
       </label>
-      <p className="hint safe-note"><CollarTagIcon /> Safe paws only: do not include phone numbers, email addresses, exact home addresses, or unsafe rescue instructions.</p>
+      <p id="notes-help" className="hint safe-note"><CollarTagIcon /> Safe paws only: {formCopy.safetyGuidance}</p>
       {errors.notes ? <p className="field-error">{errors.notes}</p> : null}
 
       {errors.form ? <ErrorState message={errors.form} /> : null}
@@ -122,7 +136,7 @@ export function ReportForm({ selectedLocation, onSubmitReport }: ReportFormProps
       {status === "error" && !errors.form ? <ErrorState message={formCopy.networkFailure} /> : null}
 
       <button type="submit" disabled={status === "pending"}>
-        {status === "pending" ? <><span className="whisker-pending" aria-hidden="true">⌁</span> Submitting...</> : <><HelpedPawIcon /> Submit report</>}
+        {status === "pending" ? <><span className="whisker-pending" aria-hidden="true">...</span> Submitting...</> : <><HelpedPawIcon /> Submit report</>}
       </button>
     </form>
   );
