@@ -1,8 +1,11 @@
 import { expect, test } from "@playwright/test";
 
-test("catsy desktop states are represented", async ({ page }) => {
+test("catsy desktop states are represented", async ({ page, isMobile }) => {
+  test.skip(isMobile, "Desktop precision check");
   await page.goto("/?seed=25");
   await expect(page.locator(".app-header")).toBeVisible();
+  await expect(page.getByRole("img", { name: /WhiskerWatch neighborhood lookout/i })).toBeVisible();
+  await expect(page.locator(".ww-logo-mark").first()).toHaveCSS("height", "44px");
   await expect(page.locator(".map-panel")).toBeVisible();
   await expect(page.locator(".cat-marker").first()).toBeVisible();
   await page.getByRole("button", { name: /injured cat report/i }).first().click();
@@ -29,6 +32,7 @@ test("catsy validation, success, and filter-empty states are visible", async ({ 
 test("mobile layout stacks map before form and detail", async ({ page, isMobile }) => {
   test.skip(!isMobile, "Mobile project only");
   await page.goto("/?seed=3");
+  await expect(page.locator(".ww-logo-wordmark").first()).toHaveText("WhiskerWatch");
   const mapBox = await page.locator(".map-stack").boundingBox();
   const formBox = await page.locator(".sidebar").boundingBox();
   const detailBox = await page.locator(".detail-pane").boundingBox();
