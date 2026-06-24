@@ -5,6 +5,8 @@ export default defineConfig({
   fullyParallel: true,
   use: {
     baseURL: "http://127.0.0.1:5173",
+    geolocation: { latitude: 14.5995, longitude: 120.9842 },
+    permissions: ["geolocation"],
     trace: "on-first-retry",
   },
   webServer: {
