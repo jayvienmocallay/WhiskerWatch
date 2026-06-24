@@ -1,0 +1,239 @@
+@keyframes tail-sway {
+  0% {
+    transform: rotate(-12deg);
+  }
+  100% {
+    transform: rotate(12deg);
+  }
+}
+
+@keyframes cat-breathe {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.02);
+  }
+}
+
+@keyframes cat-blink {
+  0%,
+  88%,
+  100% {
+    transform: scaleY(1);
+  }
+  93% {
+    transform: scaleY(0.08);
+  }
+}
+
+@keyframes fish-progress {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 160px;
+  }
+}
+
+.splash-tail {
+  animation: tail-sway 2s ease-in-out infinite alternate;
+}
+
+.splash-body {
+  animation: cat-breathe 2s ease-in-out infinite;
+  transform-origin: 60px 78px;
+}
+
+.splash-eye-left {
+  animation: cat-blink 3.2s ease-in-out infinite;
+  transform-origin: 52px 44px;
+}
+
+.splash-eye-right {
+  animation: cat-blink 3.2s ease-in-out infinite 0.05s;
+  transform-origin: 68px 44px;
+}
+
+.fish-progress-fill {
+  animation: fish-progress 1.2s ease-in-out infinite;
+}
+
+@keyframes cat-walk-front {
+  0% {
+    transform: rotate(20deg);
+  }
+  25% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-20deg);
+  }
+  75% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(20deg);
+  }
+}
+
+@keyframes cat-walk-back {
+  0% {
+    transform: rotate(-20deg);
+  }
+  25% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(20deg);
+  }
+  75% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-20deg);
+  }
+}
+
+@keyframes cat-body-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes roaming-tail-sway {
+  0%,
+  100% {
+    transform: rotate(-8deg);
+  }
+  50% {
+    transform: rotate(8deg);
+  }
+}
+
+@keyframes sniff-head-down {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  40%,
+  60% {
+    transform: rotate(20deg);
+  }
+}
+
+@keyframes sniff-tail-up {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  40%,
+  60% {
+    transform: rotate(-55deg);
+  }
+}
+
+@keyframes sit-tail-curl {
+  to {
+    transform: rotate(85deg);
+  }
+}
+
+@keyframes bubble-fade {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(6px);
+  }
+  15% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.roaming-cat-walking {
+  animation: cat-body-bob 0.5s ease-in-out infinite;
+}
+
+.roaming-cat-walking .cat-front-legs {
+  animation: cat-walk-front 0.5s linear infinite;
+  transform-origin: 21px 33px;
+}
+
+.roaming-cat-walking .cat-back-legs {
+  animation: cat-walk-back 0.5s linear infinite;
+  transform-origin: 47px 33px;
+}
+
+.roaming-cat-walking .cat-tail {
+  animation: roaming-tail-sway 0.8s ease-in-out infinite;
+  transform-origin: 54px 24px;
+}
+
+.roaming-cat-sniffing .cat-head-group {
+  animation: sniff-head-down 1.5s ease-in-out 1 forwards;
+  transform-origin: 16px 20px;
+}
+
+.roaming-cat-sniffing .cat-tail {
+  animation: sniff-tail-up 1.5s ease-in-out 1 forwards;
+  transform-origin: 54px 24px;
+}
+
+.roaming-cat-sitting .cat-front-legs {
+  transform: scaleY(0.35) translateY(20px);
+  transform-origin: 21px 33px;
+  transition: transform 0.4s ease;
+}
+
+.roaming-cat-sitting .cat-back-legs {
+  transform: scaleY(0.35) translateY(20px);
+  transform-origin: 47px 33px;
+  transition: transform 0.4s ease;
+}
+
+.roaming-cat-sitting .cat-tail {
+  animation: sit-tail-curl 0.5s ease forwards;
+  transform-origin: 54px 24px;
+}
+
+@media (max-width: 820px) {
+  .app-shell {
+    padding-bottom: calc(1rem + 56px);
+  }
+}
+
+@media (max-width: 460px) {
+  .app-shell {
+    padding-bottom: calc(0.75rem + 56px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash-tail,
+  .splash-body,
+  .splash-eye-left,
+  .splash-eye-right,
+  .fish-progress-fill,
+  .roaming-cat-walking,
+  .roaming-cat-walking .cat-front-legs,
+  .roaming-cat-walking .cat-back-legs,
+  .roaming-cat-walking .cat-tail,
+  .roaming-cat-sniffing .cat-head-group,
+  .roaming-cat-sniffing .cat-tail,
+  .roaming-cat-sitting .cat-tail {
+    animation: none !important;
+    transition: none !important;
+  }
+}

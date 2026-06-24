@@ -4,6 +4,7 @@ import App from "./app/App";
 import "./styles.css";
 import "./styles/design-system.css";
 import "./styles/responsive.css";
+import "./styles/cat-additions.css";
 import "leaflet/dist/leaflet.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
