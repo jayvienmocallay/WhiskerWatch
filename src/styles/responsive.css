@@ -70,6 +70,11 @@
     min-height: 320px;
   }
 
+  .location-gate {
+    grid-template-columns: 1fr;
+    min-height: 320px;
+  }
+
   .segmented label,
   .filter-row label,
   .report-list-item {

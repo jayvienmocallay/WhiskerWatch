@@ -29,7 +29,7 @@ export function CatSplash({ isVisible }: CatSplashProps) {
         pointerEvents: isVisible ? "auto" : "none",
         position: "fixed",
         transition: "opacity 0.4s ease",
-        zIndex: 1000,
+        zIndex: 2000,
       }}
     >
       <svg viewBox="0 0 120 120" width="120" height="120" focusable="false">
