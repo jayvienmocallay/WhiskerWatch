@@ -37,6 +37,10 @@ export function useUserLocation() {
   }, []);
 
   useEffect(() => {
+    // Synchronous state init is intentional: this effect re-runs whenever
+    // requestVersion changes (a fresh permission request) and must reset the
+    // status/message before re-subscribing to watchPosition.
+    /* eslint-disable react-hooks/set-state-in-effect */
     if (!navigator.geolocation) {
       setStatus("unavailable");
       setMessage("Location services are not available in this browser or connection.");
@@ -45,6 +49,7 @@ export function useUserLocation() {
 
     setStatus("requesting");
     setMessage("Waiting for your browser's location permission...");
+    /* eslint-enable react-hooks/set-state-in-effect */
 
     const watchId = navigator.geolocation.watchPosition(
       (position) => {
