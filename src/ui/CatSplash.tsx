@@ -34,16 +34,18 @@ export function CatSplash({ isVisible }: CatSplashProps) {
     >
       <svg viewBox="0 0 120 120" width="120" height="120" focusable="false">
         <g className={animationClass.trim()}>
-          <ellipse cx="60" cy="78" rx="28" ry="22" fill="#C98B55" />
           <path
             className={reducedMotion ? "" : "splash-tail"}
-            d="M84 74 C104 66 101 43 88 44"
+            d="M82 86 C106 85 113 51 92 45 C83 42 79 52 86 57"
             fill="none"
             stroke="#C98B55"
             strokeLinecap="round"
-            strokeWidth="10"
-            style={{ transformOrigin: "84px 74px" }}
+            strokeLinejoin="round"
+            strokeWidth="9"
+            style={{ transformOrigin: "83px 84px" }}
           />
+          <ellipse cx="60" cy="78" rx="28" ry="22" fill="#C98B55" />
+          <ellipse cx="60" cy="86" rx="17" ry="12" fill="#E8B88A" opacity="0.5" />
           <circle cx="60" cy="50" r="24" fill="#C98B55" />
           <polygon points="42,34 35,13 54,28" fill="#C98B55" />
           <polygon points="78,34 85,13 66,28" fill="#C98B55" />
@@ -65,7 +67,17 @@ export function CatSplash({ isVisible }: CatSplashProps) {
             ry="4"
             fill="#1F2A24"
           />
+          <circle cx="50.9" cy="44.4" r="1" fill="#F8FAF7" />
+          <circle cx="66.9" cy="44.4" r="1" fill="#F8FAF7" />
           <polygon points="60,55 56,59 64,59" fill="#E95F45" />
+          <path
+            d="M60 59 Q57 62.5 54 61 M60 59 Q63 62.5 66 61"
+            fill="none"
+            stroke="#1F2A24"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            opacity="0.7"
+          />
           <g stroke="#1F2A24" strokeLinecap="round" strokeWidth="1.4" opacity="0.72">
             <line x1="54" y1="60" x2="34" y2="56" />
             <line x1="54" y1="63" x2="34" y2="63" />
